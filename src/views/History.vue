@@ -35,14 +35,9 @@
                  show-empty
         >
             <template #cell(USERNAME)="row">
-                <span ></span>
-                <span>{{row.item.userId}}</span>
-                <span >
-                     {{posts.userId}}
+                <span>
+                    {{ getUser(row.item.userId) }}
                 </span>
-
-
-
             </template>
             <template #cell(DETAILS)="row">
                 <b-button  size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
@@ -103,27 +98,25 @@
             rows(){
                 return this.posts.length
             },
-
-
         },
-
-
         async mounted() {
             fetch('https://jsonplaceholder.typicode.com/posts')
                 .then(response => response.json())
                 .then(json => this.posts = json)
             this.users =  await fetch('https://jsonplaceholder.typicode.com/users')
                 .then(response => response.json())
+                /*
                 .then(function (data) {
                     let temp_users = {}
                     data.forEach(function (value) {
                         temp_users[value.id] = value
-                        console.log(value)
+                        console.log('value', value)
                     })
                     // this.user = temp_users
                     return temp_users
-
-                })
+                }
+                */
+                .then((data) => data)
         },
         methods: {
              info(item,index,button) {
@@ -134,7 +127,11 @@
                 this.infoModal.content = JSON.stringify(this.user, null, 2)
                 this.$root.$emit('bv::show::modal', this.infoModal.id, button)
             },
-
+            getUser(id) {
+                 if(!this.users.length) return null;
+                 const user = this.users.filter(userItem => userItem.id === id);
+                 return user[0] ? user[0]?.name : null;
+            }
         },
 
 
