@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-form @submit.prevent="onSubmit" :id="id">
-            <b-form-group  label="Username" >
+            <b-form-group  label="Id" >
                 <b-form-input
                         v-model="id"
                         placeholder="id"
@@ -9,7 +9,7 @@
                         type="number" min="1" max="20"
                 ></b-form-input>
             </b-form-group>
-            <b-form-group  label="Username" >
+            <b-form-group  label="UserId" >
                 <b-form-input
                         v-model="userId"
                         placeholder="userId"
