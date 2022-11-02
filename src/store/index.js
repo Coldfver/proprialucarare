@@ -1,17 +1,17 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import postsModule from './Modules/postsModule';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+export default function () {
+  const Store = new Vuex.Store({
+    modules: {
+      postsModule,
+    },
+    // strict: process.env.DEBUGGING,
+    strict: false,
+  });
+
+  return Store;
+}
