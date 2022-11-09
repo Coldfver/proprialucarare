@@ -14,12 +14,17 @@
         :per-page="perPage"
         aria-controls="my-table"
     ></b-pagination>
+
+    <page />
+
     <b-form-select
         id="per-page-select"
         v-model="perPage"
         :options="pageOptions"
         size="sm"
     ></b-form-select>
+
+
     <b-table id="my-table"
              :filter-included-fields="filterOn"
              :filter="filter"
@@ -72,7 +77,6 @@
     </b-modal>
     <b-modal :id="infoModal3.id"
              :title="infoModal3.title"
-             @ok="addTodo({id:'1'})"
     >
             <pre>
                 <edition @add-todo="addTodo"></edition>
@@ -81,16 +85,16 @@
   </div>
 </template>
 <script>
-  import HistoryFilter from "./HistoryFilter";
+    import HistoryFilter from "./HistoryFilter";
     import records from '@/views/Record'
     import comments from '@/views/Planning'
     import edition from '@/views/Detail'
-    import axios from "axios";
+    import page from './Pagination'
 
     export default {
         name: "HistoryMain",
         components: {
-            HistoryFilter, records, comments, edition
+            HistoryFilter, records, comments, edition, page
         },
         data() {
             return {
@@ -138,24 +142,28 @@
             * */
             this.$store.dispatch('postsModule/FETCH_POSTS_DATA')
                 .then(response => this.posts = response);
-            this.users = await axios.get('https://jsonplaceholder.typicode.com/users')
-                .then(response => response.data)
+
+
+            this.users = await this.$store.dispatch('postsModule/FETCH_USERS_DATA')
+                .then(response => response)
         },
         methods: {
             setFilter(value) {
                 this.filter = value;
             },
+
             info(item,index,button) {
                 this.infoModal.title = `Row index: ${index+1}`
-                axios.get(`https://jsonplaceholder.typicode.com/users/${item.userId}`)
-                    .then(response => this.user = response.data)
+                this.$store.dispatch('postsModule/FETCH_USER_ID_DATA', {userId: item.userId})
+                    .then(response => this.user = response)
                 this.infoModal.content = JSON.stringify(this.user, null, 2)
                 this.$root.$emit('bv::show::modal', this.infoModal.id, button)
             },
             comp(item,index,button) {
                 this.infoModal2.title = `Show: ${index+1}`
-                axios.get(`https://jsonplaceholder.typicode.com/comments/${item.id}`)
-                    .then(response => this.inf = response.data)
+                this.$store.dispatch('postsModule/FETCH_COMMENTS_DATA', {id: item.id})
+                // axios.get(`https://jsonplaceholder.typicode.com/comments/${item.id}`)
+                    .then(response => this.inf = response)
                 this.infoModal2.content = JSON.stringify(this.inf, null, 2)
                 this.$root.$emit('bv::show::modal', this.infoModal2.id, button)
             },

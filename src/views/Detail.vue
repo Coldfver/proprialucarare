@@ -6,7 +6,7 @@
                         v-model="id"
                         placeholder="id"
                         required
-                        type="number" min="1" max="20"
+                        type="number" min="1" max="100"
                 ></b-form-input>
             </b-form-group>
             <b-form-group  label="UserId" >
@@ -14,7 +14,7 @@
                         v-model="userId"
                         placeholder="userId"
                         required
-                        type="number" min="1" max="100"
+                        type="number" min="1" max="10"
                 ></b-form-input>
             </b-form-group>
 
