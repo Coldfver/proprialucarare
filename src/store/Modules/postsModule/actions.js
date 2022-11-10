@@ -1,14 +1,11 @@
 import axios from 'axios';
 
-
 const actions = {
   FETCH_POSTS_DATA(context) {
     const config = {
       method: 'get',
       url: 'https://jsonplaceholder.typicode.com/posts',
     };
-
-
 
     return new Promise((resolve, reject) => {
       axios(config)
@@ -27,8 +24,6 @@ const actions = {
             method: 'get',
             url:  ('https://jsonplaceholder.typicode.com/users'),
         };
-
-
 
         return  new Promise((resolve, reject) => {
             axios(config)
@@ -49,8 +44,6 @@ const actions = {
             url: `https://jsonplaceholder.typicode.com/comments/${id}` ,
         };
 
-
-
         return new Promise((resolve, reject) => {
             axios(config)
                 .then((response) => {
@@ -69,8 +62,6 @@ const actions = {
             method: 'get',
             url: `https://jsonplaceholder.typicode.com/users/${userId}` ,
         };
-
-
 
         return new Promise((resolve, reject) => {
             axios(config)
