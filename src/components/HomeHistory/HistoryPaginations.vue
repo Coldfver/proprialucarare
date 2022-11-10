@@ -10,11 +10,11 @@
 
 <script>
     export default {
-        name:"TablePagination",
+        name:"HistoryPaginations",
         data() {
-          return {
-              currentPage: 1
-          }
+            return {
+                currentPage: 10
+            }
         },
         props:{
             rows:{

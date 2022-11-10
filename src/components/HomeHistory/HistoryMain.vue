@@ -46,7 +46,7 @@
         </b-button>
       </template>
     </b-table>
-      <HistoryPagination :currentPage="currentPage" :perPage="perPage" :rows="rows" @trigerPagination="setPagination"/>
+      <HistoryPaginations :currentPage="currentPage" :perPage="perPage" :rows="rows" @trigerPagination="setPagination"/>
     <b-modal :id="infoModal.id"
              :title="infoModal.title"
     >
@@ -72,7 +72,7 @@
 </template>
 <script>
     import HistoryFilter from "./HistoryFilter";
-    import HistoryPagination from './Pagination';
+    import HistoryPaginations from './HistoryPaginations';
     import HistorySelect from "./HistorySelect";
     import HistoryList from "./HistoryList";
     import HistoryComments from "./HistoryComments";
@@ -81,7 +81,7 @@
     export default {
         name: "HistoryMain",
         components: {
-            HistoryComments, HistoryList, HistorySelect, HistoryPagination, HistoryFilter, HistoryAdd
+            HistoryComments, HistoryList, HistorySelect, HistoryPaginations, HistoryFilter, HistoryAdd
         },
         data() {
             return {

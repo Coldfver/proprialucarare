@@ -20,7 +20,7 @@
 
 <script>
     export default {
-        name:"TableSelect",
+        name:"HistoySelect",
         data(){
             return {
                 perPage: 10

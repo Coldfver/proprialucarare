@@ -9,6 +9,7 @@
 
 <script>
     export default {
+        name:"HistoryComments",
         props: ['comets'],
     }
 </script>

@@ -42,6 +42,7 @@
 
 <script>
     export default {
+        name:"HistoryAddElement",
         data() {
             return {
                 title: '',
