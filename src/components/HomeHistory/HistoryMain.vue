@@ -1,31 +1,16 @@
 <template>
   <div>
-    <!--
-    ----------------------------------------------------------------
-    component HistoryFilter with emit events
-    -->
-    <HistoryFilter @trigerFilter="setFilter" />
-    <!--
-    ----------------------------------------------------------------
-    -->
-    <b-pagination
-        v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="my-table"
-    ></b-pagination>
+    <b-container>
+        <b-row>
 
-    <page />
+            <HistoryFilter @trigerFilter="setFilter" />
 
-    <b-form-select
-        id="per-page-select"
-        v-model="perPage"
-        :options="pageOptions"
-        size="sm"
-    ></b-form-select>
+            <HistorySelect :pageOptions="pageOptions" @trigerSelect="setSelect"/>
 
+        </b-row>
+    </b-container>
 
-    <b-table id="my-table"
+      <b-table id="my-table"
              :filter-included-fields="filterOn"
              :filter="filter"
              :per-page="perPage"
@@ -61,40 +46,42 @@
         </b-button>
       </template>
     </b-table>
+      <HistoryPagination :currentPage="currentPage" :perPage="perPage" :rows="rows" @trigerPagination="setPagination"/>
     <b-modal :id="infoModal.id"
              :title="infoModal.title"
     >
             <pre>
-                <records  :posts="user"></records>
+                <HistoryList  :posts="user"></HistoryList>
             </pre>
     </b-modal>
     <b-modal :id="infoModal2.id"
              :title="infoModal2.title"
     >
             <pre>
-                <comments :comets="inf"></comments>
+                <HistoryComments :comets="inf"></HistoryComments>
             </pre>
     </b-modal>
     <b-modal :id="infoModal3.id"
              :title="infoModal3.title"
     >
             <pre>
-                <edition @add-todo="addTodo"></edition>
+                <HistoryAdd @add-todo="addTodo"></HistoryAdd>
             </pre>
     </b-modal>
   </div>
 </template>
 <script>
     import HistoryFilter from "./HistoryFilter";
-    import records from '@/views/Record'
-    import comments from '@/views/Planning'
-    import edition from '@/views/Detail'
-    import page from './Pagination'
+    import HistoryPagination from './Pagination';
+    import HistorySelect from "./HistorySelect";
+    import HistoryList from "./HistoryList";
+    import HistoryComments from "./HistoryComments";
+    import HistoryAdd from "./HistoryAddElement";
 
     export default {
         name: "HistoryMain",
         components: {
-            HistoryFilter, records, comments, edition, page
+            HistoryComments, HistoryList, HistorySelect, HistoryPagination, HistoryFilter, HistoryAdd
         },
         data() {
             return {
@@ -142,14 +129,18 @@
             * */
             this.$store.dispatch('postsModule/FETCH_POSTS_DATA')
                 .then(response => this.posts = response);
-
-
             this.users = await this.$store.dispatch('postsModule/FETCH_USERS_DATA')
                 .then(response => response)
         },
         methods: {
             setFilter(value) {
                 this.filter = value;
+            },
+            setPagination(value) {
+                this.currentPage = value;
+            },
+            setSelect(value) {
+                this.perPage = value
             },
 
             info(item,index,button) {
@@ -162,7 +153,6 @@
             comp(item,index,button) {
                 this.infoModal2.title = `Show: ${index+1}`
                 this.$store.dispatch('postsModule/FETCH_COMMENTS_DATA', {id: item.id})
-                // axios.get(`https://jsonplaceholder.typicode.com/comments/${item.id}`)
                     .then(response => this.inf = response)
                 this.infoModal2.content = JSON.stringify(this.inf, null, 2)
                 this.$root.$emit('bv::show::modal', this.infoModal2.id, button)
